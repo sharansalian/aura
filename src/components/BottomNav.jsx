@@ -13,10 +13,8 @@ export default function BottomNav({ active, onChange }) {
     <nav
       className="absolute bottom-0 left-0 right-0 h-20 flex items-center justify-around px-2 z-40"
       style={{
-        background: 'linear-gradient(to top, rgba(5,11,24,0.98), rgba(5,11,24,0.85))',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderTop: '1px solid rgba(240,214,150,0.08)',
+        background: '#FFFFFF',
+        borderTop: '1px solid #F0F0F0',
       }}
     >
       {tabs.map(({ id, label, Icon }) => {
@@ -27,31 +25,28 @@ export default function BottomNav({ active, onChange }) {
             onClick={() => onChange(id)}
             className="flex flex-col items-center justify-center gap-1 flex-1 py-2 relative transition-all active:scale-90"
           >
-            {/* Active indicator dot */}
+            {/* Active indicator */}
             {isActive && (
               <motion.div
                 layoutId="nav-dot"
-                className="absolute -top-1 w-1 h-1 rounded-full bg-auraGold"
-                style={{ boxShadow: '0 0 6px rgba(240,214,150,0.8)' }}
+                className="absolute -top-px left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full"
+                style={{ background: '#C8960C' }}
               />
             )}
 
             <motion.div
-              animate={{
-                color: isActive ? '#F0D696' : 'rgba(255,255,255,0.35)',
-                scale: isActive ? 1.1 : 1,
-              }}
-              transition={{ duration: 0.2 }}
+              animate={{ color: isActive ? '#C8960C' : '#9CA3AF', scale: isActive ? 1.05 : 1 }}
+              transition={{ duration: 0.18 }}
             >
               <Icon
                 size={22}
                 strokeWidth={isActive ? 2 : 1.5}
-                fill={isActive && id === 'growth' ? '#F0D696' : 'none'}
+                fill={isActive && id === 'growth' ? '#C8960C' : 'none'}
               />
             </motion.div>
 
             <motion.span
-              animate={{ color: isActive ? '#F0D696' : 'rgba(255,255,255,0.35)' }}
+              animate={{ color: isActive ? '#C8960C' : '#9CA3AF' }}
               className="text-[10px] font-medium tracking-wide"
             >
               {label}

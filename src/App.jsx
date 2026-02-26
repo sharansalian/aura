@@ -27,24 +27,19 @@ export default function App() {
   return (
     <div
       className="min-h-screen w-full flex items-center justify-center"
-      style={{ background: '#000' }}
+      style={{ background: '#E8E8EC' }}
     >
       {/* Mobile frame */}
       <div
-        className="relative overflow-hidden bg-auraNavy"
+        className="relative overflow-hidden"
         style={{
           width: 375,
           height: 812,
           borderRadius: 40,
-          boxShadow: '0 0 0 10px #111, 0 40px 80px rgba(0,0,0,0.8)',
+          background: '#FFFFFF',
+          boxShadow: '0 0 0 10px #D0D0D6, 0 40px 80px rgba(0,0,0,0.2)',
         }}
       >
-        {/* Background divine glow */}
-        <div
-          className="absolute inset-0 pointer-events-none z-0"
-          style={{ background: 'radial-gradient(circle at 50% 15%, rgba(240,214,150,0.08) 0%, rgba(5,11,24,1) 60%)' }}
-        />
-
         <div className="absolute inset-0 z-10 flex flex-col">
           {/* Screen content area */}
           <div className="flex-1 relative overflow-hidden" style={{ paddingBottom: 80 }}>
@@ -68,7 +63,10 @@ export default function App() {
         </div>
 
         {/* iPhone notch */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-b-2xl z-50 pointer-events-none" />
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-7 rounded-b-2xl z-50 pointer-events-none"
+          style={{ background: '#FFFFFF', boxShadow: 'inset 0 -1px 0 rgba(0,0,0,0.06)' }}
+        />
       </div>
     </div>
   )

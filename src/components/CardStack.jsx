@@ -12,7 +12,6 @@ export default function CardStack({ onMatch }) {
     setLastAction(direction)
     setCards(prev => prev.filter(c => c.id !== id))
     if (direction === 'connect') {
-      // Simulate ~50% match rate on connect
       const matched = Math.random() > 0.4
       if (matched) {
         const profile = PROFILES.find(p => p.id === id)
@@ -45,26 +44,13 @@ export default function CardStack({ onMatch }) {
               <motion.div
                 key={profile.id}
                 initial={{ scale: 0.9, opacity: 0 }}
-                animate={{
-                  scale,
-                  y: translateY,
-                  opacity: 1,
-                  zIndex: cards.length - i,
-                }}
-                exit={{
-                  scale: 0.9,
-                  opacity: 0,
-                  transition: { duration: 0.2 },
-                }}
+                animate={{ scale, y: translateY, opacity: 1, zIndex: cards.length - i }}
+                exit={{ scale: 0.9, opacity: 0, transition: { duration: 0.2 } }}
                 transition={{ duration: 0.25 }}
                 className="absolute inset-0"
                 style={{ transformOrigin: 'bottom center' }}
               >
-                <SwipeCard
-                  profile={profile}
-                  onSwipe={handleSwipe}
-                  isTop={isTop}
-                />
+                <SwipeCard profile={profile} onSwipe={handleSwipe} isTop={isTop} />
               </motion.div>
             )
           })}
@@ -77,14 +63,14 @@ export default function CardStack({ onMatch }) {
         <motion.button
           whileTap={{ scale: 0.88 }}
           onClick={() => swipeTop('pass')}
-          className="w-14 h-14 rounded-full flex items-center justify-center transition-all"
+          className="w-14 h-14 rounded-full flex items-center justify-center"
           style={{
-            background: 'rgba(239,68,68,0.1)',
-            border: '1.5px solid rgba(239,68,68,0.25)',
-            boxShadow: lastAction === 'pass' ? '0 0 20px rgba(239,68,68,0.4)' : 'none',
+            background: '#FFF1F1',
+            border: `1.5px solid ${lastAction === 'pass' ? '#EF4444' : '#FECACA'}`,
+            boxShadow: lastAction === 'pass' ? '0 0 16px rgba(239,68,68,0.2)' : '0 2px 8px rgba(0,0,0,0.06)',
           }}
         >
-          <X size={22} className="text-red-400" strokeWidth={2.5} />
+          <X size={22} color="#EF4444" strokeWidth={2.5} />
         </motion.button>
 
         {/* Super like */}
@@ -92,28 +78,29 @@ export default function CardStack({ onMatch }) {
           whileTap={{ scale: 0.88 }}
           className="w-11 h-11 rounded-full flex items-center justify-center"
           style={{
-            background: 'rgba(167,139,250,0.1)',
-            border: '1.5px solid rgba(167,139,250,0.25)',
+            background: '#F5F3FF',
+            border: '1.5px solid #DDD6FE',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
           }}
         >
-          <Star size={17} className="text-purple-400" fill="rgba(167,139,250,0.3)" />
+          <Star size={17} color="#7C3AED" fill="rgba(124,58,237,0.2)" />
         </motion.button>
 
         {/* Connect */}
         <motion.button
           whileTap={{ scale: 0.88 }}
           onClick={() => swipeTop('connect')}
-          className="w-14 h-14 rounded-full flex items-center justify-center transition-all"
+          className="w-14 h-14 rounded-full flex items-center justify-center"
           style={{
-            background: 'linear-gradient(135deg, rgba(240,214,150,0.2), rgba(77,177,167,0.1))',
-            border: '1.5px solid rgba(240,214,150,0.35)',
-            boxShadow: lastAction === 'connect' ? '0 0 20px rgba(240,214,150,0.4)' : 'none',
+            background: lastAction === 'connect' ? '#C8960C' : '#FBF7EC',
+            border: `1.5px solid ${lastAction === 'connect' ? '#C8960C' : '#E8C87A'}`,
+            boxShadow: lastAction === 'connect' ? '0 0 16px rgba(200,150,12,0.3)' : '0 2px 8px rgba(0,0,0,0.06)',
           }}
         >
           <Heart
             size={22}
-            className="text-auraGold"
-            fill={lastAction === 'connect' ? '#F0D696' : 'none'}
+            color={lastAction === 'connect' ? '#FFFFFF' : '#C8960C'}
+            fill={lastAction === 'connect' ? '#FFFFFF' : 'none'}
           />
         </motion.button>
       </div>
@@ -128,17 +115,14 @@ function EmptyState({ onReset }) {
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         className="w-24 h-24 rounded-full flex items-center justify-center"
-        style={{
-          background: 'radial-gradient(circle, rgba(240,214,150,0.15), rgba(5,11,24,0.8))',
-          border: '1.5px solid rgba(240,214,150,0.2)',
-        }}
+        style={{ background: '#FBF7EC', border: '1.5px solid #E8C87A' }}
       >
         <span className="text-4xl">✦</span>
       </motion.div>
 
       <div>
-        <h3 className="text-xl font-bold text-white">You've seen everyone</h3>
-        <p className="text-sm text-white/40 mt-2 leading-relaxed">
+        <h3 className="text-xl font-bold" style={{ color: '#111827' }}>You've seen everyone</h3>
+        <p className="text-sm mt-2 leading-relaxed" style={{ color: '#9CA3AF' }}>
           Maintain your streak to attract more souls into your Aura.
         </p>
       </div>
@@ -146,8 +130,8 @@ function EmptyState({ onReset }) {
       <motion.button
         whileTap={{ scale: 0.95 }}
         onClick={onReset}
-        className="px-6 py-3 rounded-2xl font-semibold text-sm text-auraNavy"
-        style={{ background: 'linear-gradient(135deg, #F0D696, #c8a84b)' }}
+        className="px-6 py-3 rounded-2xl font-semibold text-sm text-white"
+        style={{ background: '#C8960C' }}
       >
         Refresh Aura
       </motion.button>

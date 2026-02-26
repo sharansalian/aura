@@ -9,11 +9,7 @@ export default function StreakBar({ streak = 3 }) {
   return (
     <div
       className="mx-4 rounded-2xl p-3"
-      style={{
-        background: 'rgba(15,31,61,0.6)',
-        border: '1px solid rgba(240,214,150,0.1)',
-        backdropFilter: 'blur(10px)',
-      }}
+      style={{ background: '#F9F9F9', border: '1px solid #EBEBEB' }}
     >
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-1.5">
@@ -23,15 +19,15 @@ export default function StreakBar({ streak = 3 }) {
           >
             <Flame
               size={16}
-              className={streak >= 7 ? 'text-orange-400' : streak >= 4 ? 'text-auraGold' : 'text-white/30'}
+              color={streak >= 7 ? '#FB923C' : streak >= 4 ? '#C8960C' : '#D1D5DB'}
               fill={streak >= 4 ? 'currentColor' : 'none'}
             />
           </motion.div>
-          <span className="text-xs font-semibold text-white/70">
+          <span className="text-xs font-semibold" style={{ color: '#374151' }}>
             {streak}-day streak
           </span>
         </div>
-        <span className="text-[10px] font-medium" style={{ color: '#4DB1A7' }}>
+        <span className="text-[10px] font-medium" style={{ color: '#2BA99B' }}>
           {streak >= 7 ? '🔥 On Fire!' : streak >= 4 ? 'Keep going!' : ''}
         </span>
       </div>
@@ -48,20 +44,17 @@ export default function StreakBar({ streak = 3 }) {
                 className="w-7 h-7 rounded-full flex items-center justify-center"
                 style={
                   filled
-                    ? {
-                        background: 'linear-gradient(135deg, #F0D696, #c8a84b)',
-                        boxShadow: '0 0 12px rgba(240,214,150,0.5)',
-                      }
-                    : { background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }
+                    ? { background: '#C8960C' }
+                    : { background: '#F0F0F0', border: '1px solid #E5E5E5' }
                 }
               >
                 {filled ? (
-                  <Flame size={12} className="text-auraNavy" fill="#050B18" />
+                  <Flame size={12} color="#FFFFFF" fill="#FFFFFF" />
                 ) : (
-                  <span className="text-[9px] text-white/20 font-medium">{day}</span>
+                  <span className="text-[9px] font-medium" style={{ color: '#9CA3AF' }}>{day}</span>
                 )}
               </motion.div>
-              <span className="text-[9px] text-white/25">{day}</span>
+              <span className="text-[9px]" style={{ color: '#9CA3AF' }}>{day}</span>
             </div>
           )
         })}
@@ -72,7 +65,8 @@ export default function StreakBar({ streak = 3 }) {
         <motion.p
           initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-2 text-center text-[10px] text-white/40 italic"
+          className="mt-2 text-center text-[10px] italic"
+          style={{ color: '#9CA3AF' }}
         >
           Nurture your Aura to unlock more connections.
         </motion.p>
