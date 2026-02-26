@@ -13,6 +13,10 @@ export const PROFILES = [
     bio: 'Yoga teacher & breathwork guide. I believe in sacred connections and intentional living.',
     photo: 'https://picsum.photos/seed/celeste/400/600',
     interests: ['Breathwork', 'Cacao Ceremony', 'Sound Healing'],
+    prompts: [
+      { question: 'My morning ritual looks like...', photo: 'https://picsum.photos/seed/celeste2/400/500' },
+      { question: 'You should know that I...', answer: 'Never miss a sunrise. It sets the frequency for the whole day.' },
+    ],
   },
   {
     id: 2,
@@ -27,6 +31,9 @@ export const PROFILES = [
     bio: 'Entrepreneur, cold plunger, and father figure energy. Building an empire with integrity.',
     photo: 'https://picsum.photos/seed/marcus/400/600',
     interests: ['Cold Plunge', 'Stoicism', 'Building'],
+    prompts: [
+      { question: 'My idea of a perfect Sunday...', photo: 'https://picsum.photos/seed/marcus2/400/500' },
+    ],
   },
   {
     id: 3,
@@ -41,6 +48,10 @@ export const PROFILES = [
     bio: 'Artist, astrologer, and soul explorer. Here for deep conversations at 2am.',
     photo: 'https://picsum.photos/seed/zara/400/600',
     interests: ['Astrology', 'Art', 'Philosophy'],
+    prompts: [
+      { question: "I'm most alive when...", answer: "Creating something at 2am that I can't explain in the morning." },
+      { question: 'My sacred space looks like...', photo: 'https://picsum.photos/seed/zara2/400/500' },
+    ],
   },
   {
     id: 4,
@@ -54,7 +65,10 @@ export const PROFILES = [
     aura: 'Grounded',
     bio: 'Marine-turned-therapist. I help men reconnect with their purpose.',
     photo: 'https://picsum.photos/seed/elias/400/600',
-    interests: ['Shadow Work', 'Martial Arts', 'Men\'s Work'],
+    interests: ['Shadow Work', 'Martial Arts', "Men's Work"],
+    prompts: [
+      { question: 'The thing that changed me most...', answer: 'Sitting in silence for 10 days straight. Everything after felt optional.' },
+    ],
   },
   {
     id: 5,
@@ -69,5 +83,9 @@ export const PROFILES = [
     bio: 'Herbalist & womb healing practitioner. Slow mornings and sacred rituals.',
     photo: 'https://picsum.photos/seed/luna/400/600',
     interests: ['Herbalism', 'Womb Healing', 'Ritual'],
+    prompts: [
+      { question: 'My altar always has...', photo: 'https://picsum.photos/seed/luna2/400/500' },
+      { question: "I'm happiest when...", answer: 'Barefoot in my garden with tea that is too hot to drink yet.' },
+    ],
   },
 ]

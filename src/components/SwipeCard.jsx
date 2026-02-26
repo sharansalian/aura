@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
+import { motion, useMotionValue, useTransform, animate, AnimatePresence } from 'framer-motion'
 import { MapPin, Flame, BadgeCheck } from 'lucide-react'
 import AuraImage from './AuraImage.jsx'
 
@@ -11,13 +11,17 @@ const PATH_COLORS = {
 
 export default function SwipeCard({ profile, onSwipe, isTop }) {
   const [revealed, setRevealed] = useState(false)
+  const [page, setPage] = useState(0)
   const x = useMotionValue(0)
   const y = useMotionValue(0)
   const rotate = useTransform(x, [-200, 200], [-18, 18])
   const connectOpacity = useTransform(x, [30, 120], [0, 1])
   const passOpacity = useTransform(x, [-120, -30], [1, 0])
   const pathColor = PATH_COLORS[profile.path] || '#F0D696'
-  const dragStartRef = useRef({ x: 0, y: 0 })
+  const pointerRef = useRef({ startY: 0, startX: 0 })
+
+  const prompts = profile.prompts || []
+  const totalPages = 1 + prompts.length
 
   const handleDragEnd = (_, info) => {
     const threshold = 100
@@ -37,15 +41,25 @@ export default function SwipeCard({ profile, onSwipe, isTop }) {
     setTimeout(() => onSwipe(profile.id, direction), 350)
   }
 
+  const handlePointerDown = (e) => {
+    pointerRef.current = { startY: e.clientY, startX: e.clientX }
+  }
+
+  const handlePointerUp = (e) => {
+    const dy = e.clientY - pointerRef.current.startY
+    const dx = e.clientX - pointerRef.current.startX
+    if (Math.abs(dy) > 50 && Math.abs(dy) > Math.abs(dx) * 1.5) {
+      if (dy < 0 && page < totalPages - 1) setPage(p => p + 1)
+      else if (dy > 0 && page > 0) setPage(p => p - 1)
+    }
+  }
+
   return (
     <motion.div
       style={{ x, y, rotate, position: 'absolute', inset: 0 }}
-      drag={isTop}
+      drag={isTop ? 'x' : false}
       dragElastic={0.12}
       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-      onDragStart={(_, info) => {
-        dragStartRef.current = { x: info.point.x, y: info.point.y }
-      }}
       onDragEnd={handleDragEnd}
       className="touch-none select-none"
     >
@@ -55,110 +69,198 @@ export default function SwipeCard({ profile, onSwipe, isTop }) {
           boxShadow: '0 25px 60px rgba(0,0,0,0.6)',
           border: '1px solid rgba(255,255,255,0.06)',
         }}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
       >
-        {/* Photo with blur reveal */}
-        <AuraImage
-          src={profile.photo}
-          alt={profile.name}
-          revealed={revealed}
-          onReveal={() => setRevealed(true)}
-          className="absolute inset-0 w-full h-full"
-        />
-
-        {/* Card gradient overlay */}
-        <div
-          className="absolute inset-0"
-          style={{ background: 'linear-gradient(to top, rgba(5,11,24,0.95) 0%, rgba(5,11,24,0.4) 55%, transparent 100%)' }}
-        />
-
-        {/* Top badges */}
-        <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
-          {/* Aura glow badge */}
-          <div
-            className="px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5"
-            style={{
-              background: 'rgba(5,11,24,0.7)',
-              border: `1px solid ${pathColor}40`,
-              backdropFilter: 'blur(8px)',
-              color: pathColor,
-            }}
-          >
-            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: pathColor }} />
-            {profile.aura}
-          </div>
-
-          {/* Streak */}
-          <div
-            className="px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1"
-            style={{
-              background: 'rgba(5,11,24,0.7)',
-              backdropFilter: 'blur(8px)',
-              color: profile.streak >= 7 ? '#fb923c' : 'rgba(255,255,255,0.6)',
-            }}
-          >
-            <Flame size={11} fill={profile.streak >= 7 ? '#fb923c' : 'none'} />
-            {profile.streak}d
-          </div>
-        </div>
-
-        {/* Bottom info */}
-        <div className="absolute bottom-0 left-0 right-0 p-5">
-          <div className="flex items-start justify-between gap-2">
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="text-2xl font-bold text-white">{profile.name}</h2>
-                <span className="text-white/50 text-xl font-light">{profile.age}</span>
-                {profile.verified && (
-                  <BadgeCheck size={18} style={{ color: '#4DB1A7' }} fill="rgba(77,177,167,0.2)" />
-                )}
-              </div>
-
-              <div className="flex items-center gap-1 mt-0.5">
-                <MapPin size={11} className="text-white/30" />
-                <span className="text-xs text-white/40">{profile.location}</span>
-              </div>
-
-              {/* Path badge */}
+        {/* Page indicator bars — top center */}
+        {totalPages > 1 && (
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-1 z-20">
+            {Array.from({ length: totalPages }).map((_, i) => (
               <div
-                className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded-full text-[10px] font-semibold"
+                key={i}
+                className="rounded-full transition-all duration-300"
                 style={{
-                  background: `${pathColor}15`,
-                  border: `1px solid ${pathColor}30`,
-                  color: pathColor,
+                  width: i === page ? 20 : 6,
+                  height: 4,
+                  background: i === page
+                    ? (page === 0 ? 'rgba(255,255,255,0.9)' : pathColor)
+                    : (page === 0 ? 'rgba(255,255,255,0.3)' : `${pathColor}40`),
                 }}
-              >
-                {profile.pathLabel}
-              </div>
-            </div>
-          </div>
-
-          <p className="text-white/50 text-xs leading-relaxed mt-2 line-clamp-2">{profile.bio}</p>
-
-          {/* Interests */}
-          <div className="flex flex-wrap gap-1.5 mt-3">
-            {profile.interests.map(interest => (
-              <span
-                key={interest}
-                className="text-[10px] px-2 py-0.5 rounded-full text-white/40"
-                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
-              >
-                {interest}
-              </span>
+              />
             ))}
           </div>
-        </div>
+        )}
+
+        <AnimatePresence mode="wait">
+          {page === 0 ? (
+            <motion.div
+              key="main"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.25 }}
+              className="absolute inset-0"
+            >
+              {/* Photo with blur reveal */}
+              <AuraImage
+                src={profile.photo}
+                alt={profile.name}
+                revealed={revealed}
+                onReveal={() => setRevealed(true)}
+                className="absolute inset-0 w-full h-full"
+              />
+
+              {/* Gradient overlay */}
+              <div
+                className="absolute inset-0"
+                style={{ background: 'linear-gradient(to top, rgba(5,11,24,0.95) 0%, rgba(5,11,24,0.4) 55%, transparent 100%)' }}
+              />
+
+              {/* Top badges */}
+              <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
+                <div
+                  className="px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5"
+                  style={{
+                    background: 'rgba(5,11,24,0.7)',
+                    border: `1px solid ${pathColor}40`,
+                    backdropFilter: 'blur(8px)',
+                    color: pathColor,
+                  }}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: pathColor }} />
+                  {profile.aura}
+                </div>
+                <div
+                  className="px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1"
+                  style={{
+                    background: 'rgba(5,11,24,0.7)',
+                    backdropFilter: 'blur(8px)',
+                    color: profile.streak >= 7 ? '#fb923c' : 'rgba(255,255,255,0.6)',
+                  }}
+                >
+                  <Flame size={11} fill={profile.streak >= 7 ? '#fb923c' : 'none'} />
+                  {profile.streak}d
+                </div>
+              </div>
+
+              {/* Bottom info */}
+              <div className="absolute bottom-0 left-0 right-0 p-5">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-2xl font-bold text-white">{profile.name}</h2>
+                  <span className="text-white/50 text-xl font-light">{profile.age}</span>
+                  {profile.verified && (
+                    <BadgeCheck size={18} style={{ color: '#4DB1A7' }} fill="rgba(77,177,167,0.2)" />
+                  )}
+                </div>
+                <div className="flex items-center gap-1 mt-0.5">
+                  <MapPin size={11} className="text-white/30" />
+                  <span className="text-xs text-white/40">{profile.location}</span>
+                </div>
+                <div
+                  className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded-full text-[10px] font-semibold"
+                  style={{
+                    background: `${pathColor}15`,
+                    border: `1px solid ${pathColor}30`,
+                    color: pathColor,
+                  }}
+                >
+                  {profile.pathLabel}
+                </div>
+                <p className="text-white/50 text-xs leading-relaxed mt-2 line-clamp-2">{profile.bio}</p>
+                <div className="flex flex-wrap gap-1.5 mt-3">
+                  {profile.interests.map(interest => (
+                    <span
+                      key={interest}
+                      className="text-[10px] px-2 py-0.5 rounded-full text-white/40"
+                      style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
+                    >
+                      {interest}
+                    </span>
+                  ))}
+                </div>
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-center gap-1 mt-3">
+                    <span className="text-[10px] text-white/30">swipe up for more</span>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key={`prompt-${page}`}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 40 }}
+              transition={{ duration: 0.28, ease: 'easeOut' }}
+              className="absolute inset-0 flex flex-col"
+              style={{ background: 'linear-gradient(160deg, #fffdf7 0%, #fff9ee 100%)' }}
+            >
+              {/* Warm top strip */}
+              <div
+                className="px-5 pt-14 pb-5"
+                style={{ borderBottom: `1px solid ${pathColor}20` }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div
+                    className="w-1 h-4 rounded-full"
+                    style={{ background: pathColor }}
+                  />
+                  <span className="text-xs font-bold uppercase tracking-widest" style={{ color: pathColor }}>
+                    {profile.name}, {profile.age}
+                  </span>
+                </div>
+                <h3 className="text-[22px] font-bold leading-snug" style={{ color: '#1a1206' }}>
+                  {prompts[page - 1].question}
+                </h3>
+              </div>
+
+              {/* Photo or text answer */}
+              {prompts[page - 1].photo ? (
+                <div className="flex-1 overflow-hidden mx-4 mb-4 mt-4 rounded-2xl shadow-sm">
+                  <img
+                    src={prompts[page - 1].photo}
+                    alt={prompts[page - 1].question}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div
+                  className="flex-1 mx-4 mb-4 mt-4 rounded-2xl flex items-center justify-center p-7"
+                  style={{
+                    background: `${pathColor}10`,
+                    border: `1px solid ${pathColor}25`,
+                  }}
+                >
+                  <p
+                    className="text-xl font-semibold text-center leading-relaxed"
+                    style={{ color: '#2d1f00' }}
+                  >
+                    {prompts[page - 1].answer}
+                  </p>
+                </div>
+              )}
+
+              {/* Back hint */}
+              <div className="flex items-center justify-center pb-4 gap-1">
+                <span className="text-[10px]" style={{ color: `${pathColor}70` }}>
+                  swipe down to go back
+                </span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Swipe indicators */}
         <motion.div
           style={{ opacity: connectOpacity }}
-          className="absolute top-8 left-5 px-4 py-1.5 rounded-xl border-2 border-auraTeal rotate-[-20deg]"
+          className="absolute top-8 left-5 px-4 py-1.5 rounded-xl border-2 border-auraTeal rotate-[-20deg] z-30"
         >
           <span className="text-auraTeal font-bold text-lg tracking-widest">CONNECT</span>
         </motion.div>
 
         <motion.div
           style={{ opacity: passOpacity }}
-          className="absolute top-8 right-5 px-4 py-1.5 rounded-xl border-2 border-red-400/70 rotate-[20deg]"
+          className="absolute top-8 right-5 px-4 py-1.5 rounded-xl border-2 border-red-400/70 rotate-[20deg] z-30"
         >
           <span className="text-red-400 font-bold text-lg tracking-widest">PASS</span>
         </motion.div>
