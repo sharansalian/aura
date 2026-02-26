@@ -21,7 +21,12 @@ const screenVariants = {
 }
 
 export default function App() {
-  const [onboarded, setOnboarded] = useState(false)
+  const [onboarded, setOnboarded] = useState(() => localStorage.getItem('aura_onboarded') === '1')
+
+  const handleOnboardingComplete = () => {
+    localStorage.setItem('aura_onboarded', '1')
+    setOnboarded(true)
+  }
   const [activeTab, setActiveTab] = useState('explore')
 
   const ActiveScreen = SCREENS[activeTab]
@@ -58,7 +63,7 @@ export default function App() {
               transition={{ duration: 0.35 }}
               className="absolute inset-0 z-10"
             >
-              <OnboardingFlow onComplete={() => setOnboarded(true)} />
+              <OnboardingFlow onComplete={handleOnboardingComplete} />
             </motion.div>
           ) : (
             <motion.div
