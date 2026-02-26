@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import StreakBar from '../components/StreakBar.jsx'
 import CardStack from '../components/CardStack.jsx'
 import MatchModal from '../components/MatchModal.jsx'
@@ -12,10 +12,7 @@ export default function ExploreScreen({ streak = 3 }) {
     <div className="flex flex-col h-full pt-12 pb-0 gap-3" style={{ background: '#FFFFFF' }}>
       {/* Top bar */}
       <div className="flex items-center justify-between px-5">
-        <div>
-          <h1 className="text-lg font-bold text-shimmer">Aura</h1>
-          <p className="text-[10px] mt-0.5" style={{ color: '#9CA3AF' }}>Divine Connections</p>
-        </div>
+        <h1 className="text-xl font-bold tracking-tight" style={{ color: '#111827' }}>Aura</h1>
         <div className="flex items-center gap-2">
           <button
             className="w-9 h-9 rounded-full flex items-center justify-center"
@@ -35,7 +32,7 @@ export default function ExploreScreen({ streak = 3 }) {
       {/* Streak bar */}
       <StreakBar streak={streak} />
 
-      {/* Card stack — fills remaining space */}
+      {/* Card stack */}
       <CardStack onMatch={setMatchedProfile} />
 
       {/* Match modal */}

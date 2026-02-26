@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Heart, X, Star } from 'lucide-react'
+import { Heart, X } from 'lucide-react'
 import SwipeCard from './SwipeCard.jsx'
 import { PROFILES } from '../data/profiles.js'
 
@@ -39,7 +39,6 @@ export default function CardStack({ onMatch }) {
             const isTop = i === 0
             const scale = 1 - i * 0.03
             const translateY = i * 10
-
             return (
               <motion.div
                 key={profile.id}
@@ -58,47 +57,34 @@ export default function CardStack({ onMatch }) {
       </div>
 
       {/* Action buttons */}
-      <div className="flex items-center justify-center gap-5 pb-2">
+      <div className="flex items-center justify-center gap-6 pb-2">
         {/* Pass */}
         <motion.button
           whileTap={{ scale: 0.88 }}
           onClick={() => swipeTop('pass')}
           className="w-14 h-14 rounded-full flex items-center justify-center"
           style={{
-            background: '#FFF1F1',
-            border: `1.5px solid ${lastAction === 'pass' ? '#EF4444' : '#FECACA'}`,
-            boxShadow: lastAction === 'pass' ? '0 0 16px rgba(239,68,68,0.2)' : '0 2px 8px rgba(0,0,0,0.06)',
+            background: '#FFFFFF',
+            border: `1.5px solid ${lastAction === 'pass' ? '#EF4444' : '#E5E7EB'}`,
+            boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
           }}
         >
-          <X size={22} color="#EF4444" strokeWidth={2.5} />
-        </motion.button>
-
-        {/* Super like */}
-        <motion.button
-          whileTap={{ scale: 0.88 }}
-          className="w-11 h-11 rounded-full flex items-center justify-center"
-          style={{
-            background: '#F5F3FF',
-            border: '1.5px solid #DDD6FE',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-          }}
-        >
-          <Star size={17} color="#7C3AED" fill="rgba(124,58,237,0.2)" />
+          <X size={22} color={lastAction === 'pass' ? '#EF4444' : '#9CA3AF'} strokeWidth={2} />
         </motion.button>
 
         {/* Connect */}
         <motion.button
           whileTap={{ scale: 0.88 }}
           onClick={() => swipeTop('connect')}
-          className="w-14 h-14 rounded-full flex items-center justify-center"
+          className="w-16 h-16 rounded-full flex items-center justify-center"
           style={{
-            background: lastAction === 'connect' ? '#C8960C' : '#FBF7EC',
-            border: `1.5px solid ${lastAction === 'connect' ? '#C8960C' : '#E8C87A'}`,
-            boxShadow: lastAction === 'connect' ? '0 0 16px rgba(200,150,12,0.3)' : '0 2px 8px rgba(0,0,0,0.06)',
+            background: lastAction === 'connect' ? '#C8960C' : '#FFFFFF',
+            border: `1.5px solid ${lastAction === 'connect' ? '#C8960C' : '#E5E7EB'}`,
+            boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
           }}
         >
           <Heart
-            size={22}
+            size={24}
             color={lastAction === 'connect' ? '#FFFFFF' : '#C8960C'}
             fill={lastAction === 'connect' ? '#FFFFFF' : 'none'}
           />
@@ -111,19 +97,17 @@ export default function CardStack({ onMatch }) {
 function EmptyState({ onReset }) {
   return (
     <div className="flex-1 flex flex-col items-center justify-center gap-5 px-8 text-center">
-      <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className="w-24 h-24 rounded-full flex items-center justify-center"
-        style={{ background: '#FBF7EC', border: '1.5px solid #E8C87A' }}
+      <div
+        className="w-20 h-20 rounded-full flex items-center justify-center"
+        style={{ background: '#F5F5F7', border: '1px solid #EBEBEB' }}
       >
-        <span className="text-4xl">✦</span>
-      </motion.div>
+        <Heart size={28} color="#D1D5DB" />
+      </div>
 
       <div>
-        <h3 className="text-xl font-bold" style={{ color: '#111827' }}>You've seen everyone</h3>
-        <p className="text-sm mt-2 leading-relaxed" style={{ color: '#9CA3AF' }}>
-          Maintain your streak to attract more souls into your Aura.
+        <h3 className="text-lg font-bold" style={{ color: '#111827' }}>You've seen everyone</h3>
+        <p className="text-sm mt-1.5 leading-relaxed" style={{ color: '#9CA3AF' }}>
+          Keep up your daily habits to unlock more connections.
         </p>
       </div>
 
@@ -133,7 +117,7 @@ function EmptyState({ onReset }) {
         className="px-6 py-3 rounded-2xl font-semibold text-sm text-white"
         style={{ background: '#C8960C' }}
       >
-        Refresh Aura
+        Refresh
       </motion.button>
     </div>
   )

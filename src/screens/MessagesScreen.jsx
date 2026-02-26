@@ -7,7 +7,6 @@ const MOCK_MATCHES = [
     id: 1,
     name: 'Celeste',
     photo: 'https://picsum.photos/seed/celeste/80/80',
-    path: 'feminine',
     lastMessage: "I'd love to hear about your morning ritual ✨",
     time: '2m',
     unread: 2,
@@ -17,7 +16,6 @@ const MOCK_MATCHES = [
     id: 2,
     name: 'Elias',
     photo: 'https://picsum.photos/seed/elias/80/80',
-    path: 'masculine',
     lastMessage: 'That breathwork session sounds incredible.',
     time: '1h',
     unread: 0,
@@ -27,15 +25,12 @@ const MOCK_MATCHES = [
     id: 3,
     name: 'Zara',
     photo: 'https://picsum.photos/seed/zara/80/80',
-    path: 'kin',
     lastMessage: "What's your moon sign? 🌙",
     time: '3h',
     unread: 1,
     verified: false,
   },
 ]
-
-const PATH_COLORS = { feminine: '#C8960C', masculine: '#2BA99B', kin: '#7C3AED' }
 
 export default function MessagesScreen() {
   const [query, setQuery] = useState('')
@@ -74,7 +69,7 @@ export default function MessagesScreen() {
         <p className="text-xs uppercase tracking-widest font-semibold mb-3" style={{ color: '#9CA3AF' }}>
           New Matches
         </p>
-        <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-1">
+        <div className="flex gap-4 overflow-x-auto hide-scrollbar pb-1">
           {MOCK_MATCHES.map((match, i) => (
             <motion.button
               key={match.id}
@@ -86,14 +81,14 @@ export default function MessagesScreen() {
               <div className="relative">
                 <div
                   className="w-14 h-14 rounded-full overflow-hidden"
-                  style={{ border: `2.5px solid ${PATH_COLORS[match.path]}` }}
+                  style={{ border: '2px solid #E5E7EB' }}
                 >
                   <img src={match.photo} alt={match.name} className="w-full h-full object-cover" />
                 </div>
                 {match.unread > 0 && (
                   <div
-                    className="absolute -top-0.5 -right-0.5 rounded-full flex items-center justify-center text-[9px] font-bold text-white"
-                    style={{ background: '#C8960C', minWidth: '1.1rem', minHeight: '1.1rem', width: '1.1rem', height: '1.1rem' }}
+                    className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white"
+                    style={{ background: '#C8960C' }}
                   >
                     {match.unread}
                   </div>
@@ -119,12 +114,12 @@ export default function MessagesScreen() {
               transition={{ delay: i * 0.07 }}
               className="flex items-center gap-3 p-3 rounded-2xl text-left active:scale-[0.98] transition-all"
               style={{
-                background: match.unread > 0 ? '#FBF7EC' : 'transparent',
+                background: match.unread > 0 ? '#FAFAFA' : 'transparent',
               }}
             >
               <div
                 className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0"
-                style={{ border: `2px solid ${PATH_COLORS[match.path]}` }}
+                style={{ border: '1.5px solid #E5E7EB' }}
               >
                 <img src={match.photo} alt={match.name} className="w-full h-full object-cover" />
               </div>

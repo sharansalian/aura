@@ -3,7 +3,7 @@ import { BadgeCheck, Edit3, Settings, ChevronRight, Shield, Bell } from 'lucide-
 
 const STATS = [
   { label: 'Streak',  value: '3🔥', color: '#FB923C' },
-  { label: 'Matches', value: '12',  color: '#C8960C' },
+  { label: 'Matches', value: '12',  color: '#111827' },
   { label: 'Aura XP', value: '840', color: '#2BA99B' },
 ]
 
@@ -32,26 +32,26 @@ export default function ProfileScreen() {
         <div className="relative mb-4">
           <div
             className="w-24 h-24 rounded-full overflow-hidden flex items-center justify-center"
-            style={{ background: '#FBF7EC', border: '2px solid #E8C87A' }}
+            style={{ background: '#F5F5F7', border: '1.5px solid #E5E7EB' }}
           >
             <span className="text-4xl">✦</span>
           </div>
           <button
-            className="absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center"
+            className="absolute bottom-0 right-0 w-7 h-7 rounded-full flex items-center justify-center"
             style={{ background: '#C8960C' }}
           >
-            <Edit3 size={13} color="#FFFFFF" />
+            <Edit3 size={12} color="#FFFFFF" />
           </button>
         </div>
 
         <div className="text-center">
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex items-center justify-center gap-1.5">
             <h2 className="text-xl font-bold" style={{ color: '#111827' }}>You</h2>
-            <BadgeCheck size={18} style={{ color: '#2BA99B' }} />
+            <BadgeCheck size={17} style={{ color: '#2BA99B' }} />
           </div>
           <div
-            className="inline-flex items-center gap-1.5 mt-1.5 px-3 py-1 rounded-full text-xs font-semibold"
-            style={{ background: '#FBF7EC', border: '1px solid #E8C87A', color: '#A07808' }}
+            className="inline-flex items-center gap-1.5 mt-1.5 px-3 py-1 rounded-full text-xs font-medium"
+            style={{ background: '#F5F5F7', border: '1px solid #EBEBEB', color: '#6B7280' }}
           >
             Divine Feminine
           </div>
@@ -59,7 +59,7 @@ export default function ProfileScreen() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-2.5 px-5 mb-5">
+      <div className="grid grid-cols-3 gap-2 px-5 mb-5">
         {STATS.map(({ label, value, color }) => (
           <div
             key={label}
@@ -75,23 +75,23 @@ export default function ProfileScreen() {
       {/* Aura score */}
       <div
         className="mx-5 mb-5 p-4 rounded-2xl"
-        style={{ background: '#F9F6EE', border: '1px solid #EDE6D0' }}
+        style={{ background: '#F9F9F9', border: '1px solid #EBEBEB' }}
       >
         <div className="flex items-center justify-between mb-2">
           <p className="text-sm font-semibold" style={{ color: '#111827' }}>Aura Score</p>
-          <span className="text-xs font-bold" style={{ color: '#C8960C' }}>Luminous</span>
+          <span className="text-xs font-semibold" style={{ color: '#C8960C' }}>Luminous</span>
         </div>
-        <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: '#EDE6D0' }}>
+        <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: '#E5E7EB' }}>
           <motion.div
             initial={{ width: '0%' }}
             animate={{ width: '68%' }}
             transition={{ duration: 1, ease: 'easeOut', delay: 0.3 }}
             className="h-full rounded-full"
-            style={{ background: 'linear-gradient(90deg, #2BA99B, #C8960C)' }}
+            style={{ background: '#C8960C' }}
           />
         </div>
         <p className="text-[10px] mt-2" style={{ color: '#9CA3AF' }}>
-          Maintain your daily habits to unlock <span style={{ color: '#C8960C' }}>Radiant</span> status.
+          Maintain daily habits to reach <span style={{ color: '#C8960C' }}>Radiant</span> status.
         </p>
       </div>
 
@@ -105,12 +105,12 @@ export default function ProfileScreen() {
           >
             <div
               className="w-8 h-8 rounded-full flex items-center justify-center"
-              style={{ background: '#FBF7EC' }}
+              style={{ background: '#FFFFFF', border: '1px solid #EBEBEB' }}
             >
-              <Icon size={15} style={{ color: '#C8960C' }} />
+              <Icon size={14} style={{ color: '#6B7280' }} />
             </div>
             <span className="flex-1 text-sm text-left" style={{ color: '#374151' }}>{label}</span>
-            <ChevronRight size={15} style={{ color: '#D1D5DB' }} />
+            <ChevronRight size={14} style={{ color: '#D1D5DB' }} />
           </button>
         ))}
       </div>
