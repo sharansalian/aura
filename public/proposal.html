@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aura: Glow-Up OS — Strategy Proposal</title>
+<style>
+  :root {
+    --bg: #0b0b0c;
+    --panel: #141416;
+    --ink: #f5f5f4;
+    --muted: #a1a1aa;
+    --accent: #c8960c;
+    --accent-soft: rgba(200,150,12,0.12);
+    --teal: #2ba99b;
+    --red: #ef4444;
+    --green: #22c55e;
+    --border: #27272a;
+    --code: #1c1c1e;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif;
+    line-height: 1.6;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 56px 24px 96px; }
+  header.title { border-bottom: 1px solid var(--border); padding-bottom: 28px; margin-bottom: 40px; }
+  .eyebrow { color: var(--accent); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; }
+  h1 { font-size: 42px; font-weight: 700; margin: 8px 0 6px; letter-spacing: -0.02em; line-height: 1.15; }
+  .sub { color: var(--muted); font-size: 17px; margin: 0; }
+  h2 { font-size: 26px; font-weight: 700; margin: 56px 0 16px; letter-spacing: -0.01em; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  h3 { font-size: 18px; font-weight: 600; margin: 28px 0 8px; color: var(--ink); }
+  h4 { font-size: 15px; font-weight: 600; margin: 18px 0 6px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; }
+  p { margin: 10px 0; color: var(--ink); }
+  .muted { color: var(--muted); }
+  ul, ol { padding-left: 22px; margin: 10px 0; }
+  li { margin: 6px 0; }
+  strong { color: var(--ink); font-weight: 600; }
+  code { background: var(--code); color: #e0e0dc; padding: 2px 6px; border-radius: 4px; font-size: 13.5px; font-family: "SF Mono", "Menlo", monospace; }
+  pre { background: var(--code); color: #e0e0dc; padding: 14px 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; line-height: 1.55; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14.5px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; background: var(--panel); }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  .pill { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  .pill.win { background: rgba(34,197,94,0.12); color: var(--green); }
+  .pill.dead { background: rgba(239,68,68,0.12); color: var(--red); }
+  .pill.gap { background: var(--accent-soft); color: var(--accent); }
+  .pill.warn { background: rgba(255,165,0,0.12); color: #ffa500; }
+  .callout { border-left: 3px solid var(--accent); background: var(--panel); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 18px 0; }
+  .callout.danger { border-left-color: var(--red); }
+  .callout.success { border-left-color: var(--green); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+  .card .label { color: var(--muted); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; }
+  .card .num { font-size: 26px; font-weight: 700; margin: 4px 0; }
+  .stack { background: var(--code); border-radius: 8px; padding: 14px 16px; margin: 12px 0; font-size: 14px; }
+  .stack .row { display: grid; grid-template-columns: 160px 1fr; gap: 12px; padding: 6px 0; border-bottom: 1px dashed var(--border); }
+  .stack .row:last-child { border-bottom: none; }
+  .stack .key { color: var(--muted); font-weight: 500; }
+  .arrow { color: var(--accent); font-weight: 700; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+  .footer { color: var(--muted); font-size: 13px; margin-top: 60px; text-align: center; padding-top: 24px; border-top: 1px solid var(--border); }
+  @media (max-width: 700px) {
+    .grid2 { grid-template-columns: 1fr; }
+    .stack .row { grid-template-columns: 1fr; gap: 2px; }
+    h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="title">
+  <div class="eyebrow">Strategy Proposal &middot; May 2026</div>
+  <h1>Aura: Glow-Up OS</h1>
+  <p class="sub">Pivot Aura Divine away from generic dating into a self-upgrade OS for men 18&ndash;26. Looksmaxxing in, habits stay, dating coach pays.</p>
+</header>
+
+<h2>1. Executive summary</h2>
+<p>You've built three products and shipped zero. The instinct to pivot to <strong>love &middot; beauty &middot; lean-bulk-to-slay</strong> is directionally right &mdash; that market is bigger and more monetizable than edtech (Qubit) or read-later (Pocket). But "love is forever, people will pay" is true for the category, false for any specific product. Generic dating apps are <strong>contracting</strong>; you can't beat Bumble at being Bumble, and you don't need to.</p>
+<p>The bet that fits your stack: <strong>repurpose Aura Divine into a Glow-Up OS</strong>. Acquisition wedge = AI looksmaxxing scoring (TikTok-native, $50-creator playbook). Retention moat = your already-built habit tracker + XP system (the thing every Umax clone lacks). Monetization upsell = AI dating coach (Rizz-style screenshot reply). Reuse Pocket's Firebase/Cloud Functions/Vite-React stack wholesale.</p>
+<p>One SKU at launch. One channel (TikTok creators). 90-day kill criterion: <strong>1k WAU + $1k MRR or stop</strong>. No fourth product.</p>
+
+<h2>2. Honest pushback (read once)</h2>
+<div class="callout danger">
+  <p style="margin-top:0"><strong>The risk is not picking the wrong market &mdash; it's the abandonment pattern.</strong> "My desire dried out" is a founder-side problem; the next product gets the same treatment in 6 months unless you change <em>how</em> you commit, not <em>what</em>.</p>
+  <p style="margin-bottom:0">Two corrections to your framing: (1) "I have infra" &mdash; you have a frontend prototype + Pocket's Firebase scaffold. The new app is closer to a fresh build than you think. (2) Bigger markets are usually <em>harder</em>, not easier. Pick one wedge, set a kill criterion, ship. Don't pivot from this one too.</p>
+</div>
+
+<h2>3. Market reality</h2>
+
+<h3>What's monetizing in 2025&ndash;2026</h3>
+<table>
+  <thead><tr><th>Category</th><th>Leader</th><th>Mechanic</th><th>Pricing</th><th>Reported scale</th><th>Verdict</th></tr></thead>
+  <tbody>
+    <tr><td>Looksmaxxing / glow-up</td><td>Umax (Blake Anderson)</td><td>Selfie &rarr; AI score &rarr; paywall &rarr; daily prompts</td><td>$3.99/wk</td><td>~3.5M downloads, ~$6M ARR in 6 months</td><td><span class="pill win">Hot</span></td></tr>
+    <tr><td>AI dating coach</td><td>Rizz</td><td>Screenshot of convo &rarr; AI reply</td><td>$6.99/wk</td><td>~7.5M downloads, est $5&ndash;15M ARR</td><td><span class="pill win">Hot</span></td></tr>
+    <tr><td>AI dating photos</td><td>PhotoAI (Levels)</td><td>Train on selfies &rarr; 100s of headshots</td><td>$29&ndash;79/mo</td><td>$138K MRR, ~$1.6M ARR, solo</td><td><span class="pill win">Hot</span></td></tr>
+    <tr><td>Aesthetic body / "look hot"</td><td>&mdash;</td><td>Photo progression + macros + workouts</td><td>&mdash;</td><td>Cal AI did $30M w/ photo&rarr;macros, acquired by MFP</td><td><span class="pill gap">Open gap</span></td></tr>
+    <tr><td>Generic dating apps</td><td>Match Group / Bumble</td><td>Swipe</td><td>$15&ndash;30/mo</td><td>Bumble Q3 '24: lost ~$849M, laid off 30%</td><td><span class="pill dead">Dying</span></td></tr>
+    <tr><td>Niche dating</td><td>S'More / The League / Sapio</td><td>Curated swipe</td><td>varies</td><td>S'More discontinued '23, League absorbed by Match '22</td><td><span class="pill dead">Graveyard</span></td></tr>
+  </tbody>
+</table>
+
+<h3>Bumble &amp; the "dating apps are over" thesis &mdash; you're right</h3>
+<div class="callout">
+  <ul style="margin:0">
+    <li><strong>Bumble Q3 2024:</strong> ~$849M loss, 30% workforce cut. Stock down >85% from IPO.</li>
+    <li><strong>Tinder UK:</strong> &minus;594K users in 2024.</li>
+    <li><strong>UK dating-app usage overall:</strong> &minus;16% in 2024.</li>
+    <li><strong>Gen Z:</strong> 58% report swipe fatigue (2024&ndash;25 surveys). Trust collapse, AI-bot anxiety, paid-tier resentment.</li>
+    <li><strong>Niche dating graveyard:</strong> S'More acquired by Tawkify '23 then app discontinued. The League absorbed by Match '22, stagnant. Sapio, Qemistry, The Sauce &mdash; barely visible.</li>
+  </ul>
+</div>
+<p>Translation: <strong>do not build a dating app.</strong> Build the layer <em>above</em> dating apps &mdash; the product people use to <em>get ready</em> for them and <em>perform better</em> in them. That's a complement, not a competitor, to Match Group. It rides their distribution instead of fighting it.</p>
+
+<h3>Distribution math</h3>
+<div class="grid2">
+  <div class="card"><div class="label">iOS CPI (paid)</div><div class="num">~$4.70</div><div class="muted">+60% in 5 years (RevenueCat 2025)</div></div>
+  <div class="card"><div class="label">AI-app RPI</div><div class="num">~$0.63</div><div class="muted">2x category median</div></div>
+  <div class="card"><div class="label">Free-trial &rarr; LTV uplift</div><div class="num">+64%</div><div class="muted">on weekly subs</div></div>
+  <div class="card"><div class="label">Anderson playbook</div><div class="num">$50/creator</div><div class="muted">2 mid-tier TikTokers; one viral hits the App Store charts</div></div>
+</div>
+
+<h2>4. The bet: Glow-Up OS</h2>
+<p>One sentence: <strong>"Get hot. Track the glow-up. Get matches."</strong></p>
+<p>The four-step loop, none of which exists as a single product today:</p>
+<ol>
+  <li><strong>Acquisition (TikTok-native):</strong> AI face/body scoring with hard paywall reveal. Looksmaxxing wedge &mdash; viral, proven.</li>
+  <li><strong>Retention (the moat):</strong> Habit tracker + Aura XP you've already built. Skincare, gym, sleep, photos. Weekly "potential" rescore. <em>This is what no Umax clone has &mdash; their D30 is brutal.</em></li>
+  <li><strong>Monetization (Pro tier):</strong> AI dating coach &mdash; paste a Hinge/Tinder screenshot, get reply suggestions. Higher willingness to pay than scoring.</li>
+  <li><strong>v2 add-on:</strong> AI dating-profile photo generator via Replicate / Fal API. Capital-light bolt-on once you have users.</li>
+</ol>
+
+<h3>Why this beats starting a fourth product</h3>
+<ul>
+  <li>Reuses ~70% of the Aura React frontend (onboarding, habit tracker, XP, streaks, Profile, swipe component).</li>
+  <li>Reuses Pocket's Firebase + Cloud Functions stack wholesale (see Section 6).</li>
+  <li>Hits all three of your stated pulls: <strong>love</strong> (dating coach), <strong>beauty</strong> (looksmaxxing), <strong>lean bulk to slay</strong> (body recomp tracking).</li>
+  <li>Targets a real product gap. Umax owns step 1 only. Rizz owns step 3 only. PhotoAI owns step 4 only. Built With Science owns step 2 for fitness only. <strong>Nobody owns the whole loop.</strong></li>
+</ul>
+
+<h2>5. Business model</h2>
+
+<h3>Pricing tiers</h3>
+<table>
+  <thead><tr><th>Tier</th><th>Price</th><th>What's included</th><th>Conversion role</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Free</strong></td><td>$0</td><td>1 face scan, basic score, capped habits (3/day)</td><td>Top of funnel, TikTok-driven</td></tr>
+    <tr><td><strong>Glow-Up Weekly</strong></td><td>$4.99/wk (3-day trial)</td><td>Rescore, full habit tracker + XP, skincare/gym plans, progress photos</td><td>Volume tier; targets Umax pricing</td></tr>
+    <tr><td><strong>Pro Weekly</strong></td><td>$9.99/wk</td><td>Above + AI dating coach (screenshot &rarr; reply), opener generator, bio rewriter</td><td>High-intent monetization</td></tr>
+    <tr><td><strong>Photo Pack (v2)</strong></td><td>$39 one-time</td><td>100 AI dating-app photos via Replicate/Fal</td><td>Add-on revenue</td></tr>
+  </tbody>
+</table>
+
+<h3>Target unit economics (industry benchmarks, not promises)</h3>
+<div class="grid2">
+  <div class="card"><div class="label">iOS CPI (TikTok creators)</div><div class="num">$3&ndash;5</div><div class="muted">vs paid UA at $4.70</div></div>
+  <div class="card"><div class="label">D30 retention target</div><div class="num">&ge;18%</div><div class="muted">vs ~8&ndash;10% for Umax-clones (habits are why)</div></div>
+  <div class="card"><div class="label">LTV : CAC by month 6</div><div class="num">3 : 1</div><div class="muted">elite mobile sub benchmark</div></div>
+  <div class="card"><div class="label">Gross margin</div><div class="num">~80%+</div><div class="muted">AI inference + storage are main COGS</div></div>
+</div>
+
+<h3>Revenue mix expectation</h3>
+<ul>
+  <li><strong>~60% Glow-Up Weekly</strong> &mdash; volume tier, fed by TikTok organic.</li>
+  <li><strong>~30% Pro Weekly</strong> &mdash; the Rizz-style coach drives upsell.</li>
+  <li><strong>~10% Photo Pack</strong> &mdash; one-time, lumpy.</li>
+</ul>
+
+<h3>Path to $1M ARR (sketch, not forecast)</h3>
+<div class="stack">
+  <div class="row"><div class="key">Week 12 target</div><div>1k WAU, $1k MRR &rarr; <strong>kill or scale gate</strong></div></div>
+  <div class="row"><div class="key">Month 6 target</div><div>10k WAU, $25k MRR &rarr; raise paid UA</div></div>
+  <div class="row"><div class="key">Month 12 target</div><div>50k WAU, $85k MRR &rarr; ~$1M ARR run rate</div></div>
+  <div class="row"><div class="key">Failure mode</div><div>D30 below 12% by month 3 &rarr; habits aren't sticky enough &rarr; rebuild retention layer before scaling</div></div>
+</div>
+
+<h2>6. Infrastructure: what to reuse from Pocket</h2>
+<p>Inventoried <code>github.com/sharansalian/pocket</code>: React 19 + Vite + Firebase Auth + Firestore + Cloud Functions + Firebase Hosting + Vercel + GitHub Actions, monorepo with <code>/apps</code>, <code>/packages/core</code>, <code>/functions</code>. Same stack as Aura. Lift wholesale.</p>
+
+<h3>Pocket &rarr; Glow-Up OS reuse map</h3>
+<table>
+  <thead><tr><th>Pocket asset</th><th>Reuse for</th><th>Effort</th></tr></thead>
+  <tbody>
+    <tr><td><code>firebase.json</code>, <code>.firebaserc</code></td><td>New Firebase project for Aura with same hosting + emulator config</td><td>Copy + rename</td></tr>
+    <tr><td><code>firestore.rules</code> + <code>firestore.indexes.json</code></td><td>Base security rules &mdash; tighten per-user access for selfies/scores</td><td>Adapt schemas</td></tr>
+    <tr><td><code>/functions</code> Cloud Functions scaffold</td><td>Face-scan endpoint (proxy to OpenAI/Vertex), Rizz-style reply endpoint, RevenueCat webhook handler</td><td>Replace business logic, keep deploy pipeline</td></tr>
+    <tr><td><code>/packages/core</code></td><td>Shared types, auth helpers, Firestore SDK wrappers</td><td>Direct lift</td></tr>
+    <tr><td>Auth flow (Firebase Auth UI)</td><td>Sign-in (Apple/Google), session management</td><td>Direct lift</td></tr>
+    <tr><td>GitHub Actions deploy workflow</td><td>CI for Aura: PR previews on Vercel, prod on merge</td><td>Direct lift, swap project IDs</td></tr>
+    <tr><td>Vite + React 19 setup</td><td>Frontend baseline (matches existing Aura)</td><td>Already aligned</td></tr>
+  </tbody>
+</table>
+
+<h3>What to <em>add</em> on top of Pocket's foundation</h3>
+<div class="stack">
+  <div class="row"><div class="key">Firebase Storage</div><div>Selfie uploads, before/after photos. Per-user folders, signed URLs only.</div></div>
+  <div class="row"><div class="key">RevenueCat</div><div>iOS/Android sub management, webhooks &rarr; Cloud Function &rarr; Firestore <code>entitlements</code> doc.</div></div>
+  <div class="row"><div class="key">Vertex AI / OpenAI proxy</div><div>Cloud Function wraps GPT-4o vision for face scoring. Don't expose API keys client-side.</div></div>
+  <div class="row"><div class="key">Replicate / Fal.ai (v2)</div><div>For dating-photo generation. Fine-tune Flux on user selfies. Async job queue via Pub/Sub or Cloud Tasks.</div></div>
+  <div class="row"><div class="key">Firebase Cloud Messaging</div><div>Streak/habit reminders. Already supported in Firebase, no new vendor.</div></div>
+  <div class="row"><div class="key">PostHog / Amplitude</div><div>Event analytics for funnel: scan &rarr; paywall &rarr; trial &rarr; retain.</div></div>
+  <div class="row"><div class="key">App Check</div><div>Block bot/scraper abuse on the scan endpoint &mdash; this WILL be attacked.</div></div>
+</div>
+
+<h3>Final stack diagram</h3>
+<pre>
+[ React/Vite mobile-shell PWA + Capacitor (iOS/Android) ]
+                    &darr;
+        [ Firebase Auth (Apple/Google) ]
+                    &darr;
+   [ Firestore: users, scores, habits, streaks, entitlements ]
+        &darr;                            &darr;
+[ Firebase Storage ]            [ Cloud Functions ]
+[ user selfies ]                  &darr;       &darr;        &darr;
+                            [Vertex/  [Rizz/   [RevenueCat
+                            OpenAI    OpenAI    webhook
+                            scan]     reply]    receiver]
+                                              &darr;
+                                       [ Replicate/Fal v2 ]
+</pre>
+
+<h2>7. 30 / 60 / 90 roadmap</h2>
+
+<h3>Days 0&ndash;30 &mdash; ship the acquisition wedge</h3>
+<ul>
+  <li>New Firebase project, lift Pocket's <code>firebase.json</code> + <code>/functions</code> scaffold.</li>
+  <li>Build looksmaxxing flow: selfie upload &rarr; Cloud Function &rarr; GPT-4o vision &rarr; score (jaw, skin, hair, "potential") &rarr; paywall reveal.</li>
+  <li>Migrate Aura's onboarding + habit tracker + XP behind paywall.</li>
+  <li>Wire RevenueCat, Apple/Google in-app purchases.</li>
+  <li>Single SKU: men 18&ndash;26.</li>
+  <li>Brand: keep <strong>Aura</strong> &mdash; gold + clean white UI you already redesigned reads premium.</li>
+</ul>
+
+<h3>Days 31&ndash;60 &mdash; distribution test</h3>
+<ul>
+  <li>Gift 20 mid-tier TikTok creators ($50&ndash;150 each) the Anderson hook ("I rated my face with AI"). Track installs via App Store deep links.</li>
+  <li>Ship Pro tier with Rizz-style screenshot &rarr; reply (Cloud Function proxying GPT-4o).</li>
+  <li>ASO: target <code>looksmax</code>, <code>glow up</code>, <code>rizz</code>, <code>dating coach</code>.</li>
+  <li><strong>Kill criterion:</strong> &lt;5k installs after creator gifting + organic &rarr; stop creator spend, reassess hook.</li>
+</ul>
+
+<h3>Days 61&ndash;90 &mdash; retention &amp; monetization</h3>
+<ul>
+  <li>Weekly rescore cadence with photo-diff overlay.</li>
+  <li>Push notifications tied to streak (FCM, leverages existing XP system).</li>
+  <li>A/B test paywall (weekly vs monthly default; 3-day trial vs no trial).</li>
+  <li><strong>Go/no-go gate at day 90:</strong> 1k WAU + $1k MRR + D30 &ge; 15%. Hit &rarr; raise paid UA budget. Miss &rarr; <strong>stop</strong>. Do not pivot to a fifth product.</li>
+</ul>
+
+<h2>8. Risks &amp; mitigations</h2>
+<table>
+  <thead><tr><th>Risk</th><th>Likelihood</th><th>Mitigation</th></tr></thead>
+  <tbody>
+    <tr><td>Apple rejects "appearance scoring" framing</td><td><span class="pill warn">Medium</span></td><td>Position as "personalized coaching plan" with the scan as input. Avoid words like "rate," "rank," "hot/ugly." Have a "wellness/self-improvement" review angle ready.</td></tr>
+    <tr><td>Looksmaxxing harm narrative (teen mental health)</td><td><span class="pill warn">Medium</span></td><td>18+ gating. No public leaderboards. Frame around progress, not absolute scores. Optional opt-out of numerical score.</td></tr>
+    <tr><td>TikTok virality doesn't hit</td><td><span class="pill warn">Medium-High</span></td><td>Kill criterion at day 60. 20 creators is the test, not 200. Don't double down on a flat channel.</td></tr>
+    <tr><td>Founder burnout / abandonment (your pattern)</td><td><span class="pill dead">High</span></td><td>Hard 90-day kill gate &mdash; either it works or you stop, but you don't start something new. Public commitment helps; consider a co-founder/accountability partner.</td></tr>
+    <tr><td>Selfie-upload abuse (NSFW, scrapers)</td><td><span class="pill warn">Medium</span></td><td>Firebase App Check + Cloud Function input validation + content moderation API on uploads.</td></tr>
+    <tr><td>Sub fatigue / weekly-sub backlash</td><td>Low</td><td>Offer monthly + annual tiers. Free trial is the lever.</td></tr>
+  </tbody>
+</table>
+
+<h2>9. Verification</h2>
+<p>Not "does the code work" &mdash; <strong>does the bet work.</strong></p>
+<div class="stack">
+  <div class="row"><div class="key">Week 1 of launch</div><div>&ge; 1,000 installs; &ge; 5% scan&rarr;paywall conversion</div></div>
+  <div class="row"><div class="key">Week 4</div><div>D30 retention &ge; 18% (the differentiator vs Umax's ~8&ndash;10%)</div></div>
+  <div class="row"><div class="key">Week 8</div><div>$1k MRR; LTV:CAC trending &rarr; 3:1</div></div>
+  <div class="row"><div class="key">Week 12 (kill gate)</div><div>1k WAU + $1k MRR or <strong>stop</strong></div></div>
+</div>
+<p>Before any paid spend: install on a real phone &rarr; scan &rarr; paywall &rarr; trial &rarr; habit completion &rarr; rescore. If any step has friction in informal testing with 5+ users, fix before TikTok push.</p>
+
+<h2>10. TL;DR</h2>
+<div class="callout success">
+  <ul style="margin:0">
+    <li>Pocket and Qubit are dead-ends &mdash; you're right.</li>
+    <li>Bumble is over &mdash; you're right. Don't build a dating app.</li>
+    <li>Build the <strong>layer above</strong> dating apps: a Glow-Up OS that uses looksmaxxing as the hook, your existing habit tracker as the moat, and AI dating coach as the upsell.</li>
+    <li>Lift Pocket's Firebase + Cloud Functions + Vite/React stack wholesale.</li>
+    <li>One SKU. One channel (TikTok creators). 90-day kill gate. <strong>No fifth product.</strong></li>
+  </ul>
+</div>
+
+<div class="footer">
+  Source data: market research transcript at <code>do-you-know-about-fizzy-wirth-agent-afaf0a95c35b6e8f5.md</code>. Numbers are founder self-reports / Sensor Tower estimates &mdash; directional only. &middot; Branch <code>claude/review-business-strategy-AIBhK</code>
+</div>
+
+</div>
+</body>
+</html>
